@@ -1,88 +1,31 @@
 "use strict";
 
-/*
-console.log(document.querySelector(".message").textContent);
-document.querySelector(".message").textContent = "Correct Number!";
+const modal = document.querySelector(".modal");
+const overlay = document.querySelector(".overlay");
+const btnCloseModal = document.querySelector(".close-modal");
+const btnOpenModal = document.querySelectorAll(".show-modal");
 
-document.querySelector(".number").textContent = 13;
-document.querySelector(".score").textContent = 10;
-
-document.querySelector(".guess").value = 23;
-console.log(document.querySelector(".guess").value);
-*/
-let secretNumber = Math.trunc(Math.random() * 20) + 1;
-let score = 20;
-let highscore = 0;
-const displayMessages = function (message) {
-  document.querySelector(".message").textContent = message;
+const OpenModal = function () {
+  console.log("Button clicked");
+  modal.classList.remove("hidden");
+  overlay.classList.remove("hidden");
 };
 
-document.querySelector(".check").addEventListener("click", function () {
-  const guess = Number(document.querySelector(".guess").value);
-  console.log(guess, typeof guess);
+const CloseModal = function () {
+  modal.classList.add("hidden");
+  overlay.classList.add("hidden");
+};
 
-  if (!guess) {
-    document.querySelector(".message").textContent = "⛔No Number!";
-  } else if (guess === secretNumber) {
-    // document.querySelector(".message").textContent = "🎖️Correct Number!";
-    displayMessages("🎖️Correct Number!");
+for (let i = 0; i < btnOpenModal.length; i++)
+  btnOpenModal[i].addEventListener("click", OpenModal);
 
-    document.querySelector(".number").textContent = secretNumber;
+btnCloseModal.addEventListener("click", CloseModal);
 
-    document.querySelector("body").style.backgroundColor = "#60b347";
+overlay.addEventListener("click", CloseModal);
 
-    document.querySelector(".number").style.width = "30rem";
-
-    if (score > highscore) {
-      highscore = score;
-      document.querySelector(".highscore").textContent = highscore;
-    }
-    //when guess is wrong
-  } else if (guess !== secretNumber) {
-    if (score > 1) {
-      //   document.querySelector(".message").textContent =
-      //     guess > secretNumber ? "📈Too high" : "📉Too low";
-      displayMessages(guess > secretNumber ? "📈Too high" : "📉Too low");
-
-      score--;
-      document.querySelector(".score").textContent = score;
-    } else {
-      //   document.querySelector(".message").textContent = "😥You lost the game";
-      displayMessages("😥You lost the game");
-    }
-    //   } else if (guess > secretNumber) {
-    //     if (score > 1) {
-    //       document.querySelector(".message").textContent = "📈Too high";
-    //       score--;
-    //       document.querySelector(".score").textContent = score;
-    //     } else {
-    //       document.querySelector(".message").textContent = "😥You lost the game";
-    //     }
-    //   } else if (guess < secretNumber) {
-    //     if (score > 1) {
-    //       document.querySelector(".message").textContent = "📉Too low";
-    //       score--;
-    //       document.querySelector(".score").textContent = score;
-    //     } else {
-    //       document.querySelector(".message").textContent = "😥You lost the game";
-    //     }
+document.addEventListener("keydown", function (e) {
+  console.log(e.key);
+  if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+    CloseModal();
   }
-});
-
-// const userReset = document.getElementById("agn");
-
-// userReset.addEventListener("click", function (e) {
-//   location.reload();
-//   e.preventDefault();
-// });
-
-document.querySelector(".again").addEventListener("click", function () {
-  score = 20;
-  secretNumber = Math.trunc(Math.random() * 20) + 1;
-  document.querySelector(".score").textContent = score;
-  document.querySelector(".message").textContent = "Start guessing...";
-  document.querySelector(".number").textContent = "?";
-  document.querySelector("body").style.backgroundColor = "#222";
-  document.querySelector(".number").style.width = "15rem";
-  document.querySelector(".guess").value = "";
 });
